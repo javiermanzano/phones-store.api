@@ -1,0 +1,47 @@
+{
+  "development": {
+    "username": "service",
+    "password": "test",
+    "database": "servicedev",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "service",
+    "password": "test",
+    "database": "servicetest",
+    "host": "localhost",
+    "port": 5433,
+    "dialect": "postgres"
+  },
+  "staging": {
+    "username": "service",
+    "password": "",
+    "database": "service",
+    "host": "",
+    "dialect": "postgres",
+    "port": 5432,
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true
+      }
+    }
+  },
+  "production": {
+    "username": "service",
+    "password": "",
+    "database": "service",
+    "port": 5432,
+    "host": "",
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

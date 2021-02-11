@@ -1,0 +1,107 @@
+{
+  "name": "api",
+  "version": "0.6.23",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=production node ./bin/www | pino-colada",
+    "start:dev": "NODE_ENV=development nodemon LOG_LEVEL=debug ./bin/www | pino-colada",
+    "db:migrate": "NODE_ENV=development sequelize-cli db:migrate",
+    "db:migrate:test": "NODE_ENV=test sequelize-cli db:migrate",
+    "db:migrate:staging": "NODE_ENV=staging sequelize-cli db:migrate",
+    "db:migrate:reset": "sequelize-cli db:migrate:undo:all && npm run db:migrate",
+    "db:migrate:undo:test": "NODE_ENV=test sequelize-cli db:migrate:undo:all",
+    "db:migrate:reset:test": "NODE_ENV=test npm run db:migrate:undo:test && npm run db:migrate:test",
+    "db:seed": "sequelize-cli db:seed:undo:all && sequelize-cli db:seed:all --debug",
+    "db:seed:dev": "sequelize-cli db:seed:undo:all && sequelize-cli db:seed:all --debug",
+    "db:seed:test": "NODE_ENV=test sequelize-cli db:seed:undo:all && NODE_ENV=test sequelize-cli db:seed:all --debug",
+    "pretest": "npm run db:migrate:reset:test",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --coverage --coverageDirectory=reports/coverage || :",
+    "lint": "lint-staged",
+    "lint:fix": "npx eslint . --fix",
+    "infra:up": "docker-compose up -d",
+    "infra:down": "docker-compose down"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporters",
+        {
+          "pageTitle": "Test Report",
+          "outputPath": "reports/tests/index.html"
+        }
+      ]
+    ],
+    "coverageReporters": [
+      "html"
+    ]
+  },
+  "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.3",
+    "autoprefixer": "^9.8.6",
+    "cookie-parser": "~1.4.5",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "dotenv-parse-variables": "^0.3.0",
+    "express": "~4.17.1",
+    "express-pino-logger": "^4.0.0",
+    "helmet": "^4.4.1",
+    "http-errors": "^1.8.0",
+    "http-status-codes": "^1.4.0",
+    "jade": "^1.11.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "nodemon": "^2.0.3",
+    "pg": "^8.0.2",
+    "pg-hstore": "^2.3.3",
+    "pino": "^6.2.0",
+    "pino-colada": "^1.6.1",
+    "pino-pretty": "^4.0.0",
+    "postcss": "^7.0.35",
+    "prettier": "^1.18.2",
+    "sequelize": "^5.21.6",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3",
+    "underscore": "^1.10.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "child-process-promise": "^2.2.1",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-security": "^1.4.0",
+    "husky": "^4.2.5",
+    "jest": "^25.3.0",
+    "jest-html-reporters": "^1.2.1",
+    "lint-staged": "^10.1.6",
+    "sequelize-cli": "^5.5.1",
+    "supertest": "^4.0.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
